@@ -58,8 +58,13 @@ func (connectionCache *ConnectionCache) Get(connectionString string, connectionF
     close(connEntry.ready)
   } else {
     connectionCache.mutex.Unlock()
+    //Block until function has been executed
     <-connEntry.ready
   }
 
   return connEntry.entry.connection, connEntry.entry.err
+}
+
+func (connectionCache *ConnectionCache) Size() int {
+  return len(connectionCache.cache)
 }
