@@ -2,7 +2,7 @@ package cache_test
 
 import (
   "database/sql"
-  "github.com/egjimenezg/lambda-connection-cache/cache"
+  cache "github.com/egjimenezg/lambda-connection-cache"
   "github.com/stretchr/testify/assert"
   "github.com/DATA-DOG/go-sqlmock"
   "reflect"
@@ -45,7 +45,6 @@ func TestCreateOnlyOneConnectionManager(t *testing.T){
   waitGroup.Wait()
 
   assert.Equal(t, connectionCache.Size(), 1)
-
 }
 
 func createConnectionManager(connectionString string) (interface{}, error) {

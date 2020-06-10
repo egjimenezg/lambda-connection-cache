@@ -14,12 +14,12 @@ type ConnectionFunction func(connectionString string) (interface{}, error)
 
 // Entry with channel
 type cacheEntry struct {
-  entry   connectionPool
+  entry   connectionHandler
   ready   chan struct{}
 }
 
 // Result of connection 
-type connectionPool struct {
+type connectionHandler struct {
   connection    interface{}
   err           error
 }
@@ -30,7 +30,7 @@ type ConnectionCache struct {
   mutex   sync.Mutex
 }
 
-// New creates a connection cache only once
+// New creates a connection handler cache only once
 func New() *ConnectionCache {
   once.Do(func(){
     connCache = &ConnectionCache{
