@@ -6,7 +6,7 @@ Simple thread safe map used to store database handlers created by lambda functio
 
 # Installation
 
-```
+```go
 go get github.com/egjimenezg/lambda-connection-cache
 ```
 
@@ -14,7 +14,7 @@ go get github.com/egjimenezg/lambda-connection-cache
 
 Create a function that gets the handler for your database into your repository and use the **Get** function with a connection string to avoid the creation of multiple handlers on consecutive calls.
 
-```
+```go
 package main
 
 import (
@@ -50,7 +50,7 @@ func main(){
 
 repository.go
 
-```
+```go
 package main
 
 import (
