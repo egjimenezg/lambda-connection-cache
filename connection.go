@@ -9,7 +9,7 @@ var (
   connCache   *ConnectionCache
 )
 
-// Function that will be executed to get the connection pool
+// Function that will be executed to get the connection handler
 type ConnectionFunction func(connectionString string) (interface{}, error)
 
 // Entry with channel
@@ -24,7 +24,7 @@ type connectionHandler struct {
   err           error
 }
 
-// ConnectionCache saves the created connection pools 
+// ConnectionCache saves the created connection handlers
 type ConnectionCache struct {
   cache   map[string]*cacheEntry
   mutex   sync.Mutex
@@ -41,7 +41,7 @@ func New() *ConnectionCache {
   return connCache
 }
 
-// Get obtains or create a connection pool
+// Get obtains or create a connection handler
 func (connectionCache *ConnectionCache) Get(connectionString string, connectionFunction ConnectionFunction) (interface{}, error) {
   connectionCache.mutex.Lock()
   connEntry := connectionCache.cache[connectionString]

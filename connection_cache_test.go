@@ -15,20 +15,20 @@ func TestCreateNewConnectionCacheOnlyOnce(t *testing.T){
   assert.Equal(t, connectionCache, cache.New())
 }
 
-func TestCreateNewConnectionManagerAndSavingItInCacheMap(t *testing.T) {
+func TestCreateNewConnectionHandlerAndSavingItInCacheMap(t *testing.T) {
   connectionCache := cache.New()
-  connManagerA, err := connectionCache.Get("user:password@/dbname", createConnectionManager)
+  connHandlerA, err := connectionCache.Get("user:password@/dbname", createConnectionHandler)
 
   if err != nil {
     t.Fatalf("An error '%s' has ocurred", err)
   }
 
-  connManagerB, err := connectionCache.Get("user:password@/dbname", createConnectionManager)
+  connHandlerB, err := connectionCache.Get("user:password@/dbname", createConnectionHandler)
 
-  assert.True(t, reflect.DeepEqual(connManagerA.(*sql.DB), connManagerB.(*sql.DB)))
+  assert.True(t, reflect.DeepEqual(connHandlerA.(*sql.DB), connHandlerB.(*sql.DB)))
 }
 
-func TestCreateOnlyOneConnectionManager(t *testing.T){
+func TestCreateOnlyOneConnectionHandler(t *testing.T){
   requestsNumber := 1000
   connectionCache := cache.New()
 
@@ -38,7 +38,7 @@ func TestCreateOnlyOneConnectionManager(t *testing.T){
     waitGroup.Add(1)
     go func(){
       defer waitGroup.Done()
-      connectionCache.Get("user:password@/dbname", createConnectionManager)
+      connectionCache.Get("user:password@/dbname", createConnectionHandler)
     }()
   }
 
@@ -47,7 +47,7 @@ func TestCreateOnlyOneConnectionManager(t *testing.T){
   assert.Equal(t, connectionCache.Size(), 1)
 }
 
-func createConnectionManager(connectionString string) (interface{}, error) {
+func createConnectionHandler(connectionString string) (interface{}, error) {
   db, _, err := sqlmock.New()
 
   if err != nil {
